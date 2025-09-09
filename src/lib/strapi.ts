@@ -28,7 +28,7 @@ export const fetchFromStrapi = async <T>(endpoint: string): Promise<T> => {
         const response = await strapiApi.get<CustomResponse<T>>(
           `/api/${endpoint}`
         );
-        console.log("response", response);
+
         return response.data.data;
       } catch (error) {
         console.error("Error fetching from Strapi:", error);

@@ -1,3 +1,5 @@
+import { Button } from "./ui/button";
+
 interface HomePageData {
   title: string;
   content?: string;

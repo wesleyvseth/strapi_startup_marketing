@@ -60,8 +60,6 @@ This email was sent from the contact form.
       ReplyTo: email, // Allow direct replies to the contact person
     });
 
-    console.log("Email sent successfully:", result.MessageID);
-
     return NextResponse.json({
       success: true,
       message: "Message sent successfully",
