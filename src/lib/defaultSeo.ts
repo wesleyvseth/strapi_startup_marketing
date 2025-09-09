@@ -92,7 +92,6 @@ export const getSeoObject = async (
         alternates: {
           canonical: seo?.canonicalURL || defaultCanonical,
         },
-        viewport: seo?.metaViewport || "width=device-width, initial-scale=1",
       };
     },
     ["seo-metadata"],

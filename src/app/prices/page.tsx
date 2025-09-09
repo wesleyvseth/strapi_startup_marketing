@@ -2,11 +2,12 @@ import { fetchFromStrapi } from "@/lib/strapi";
 import { getSeoObject } from "@/lib/defaultSeo";
 import { Metadata } from "next";
 import PricesPage from "@/components/PricesPage";
+import { StrapiSeo } from "@/types/strapi";
 
 interface PricesData {
   title: string;
   content?: string;
-  metadata: any;
+  metadata: StrapiSeo;
 }
 
 export async function generateMetadata(): Promise<Metadata> {

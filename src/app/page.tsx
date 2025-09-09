@@ -1,17 +1,23 @@
 import { fetchFromStrapi } from "@/lib/strapi";
 import { Metadata } from "next";
 import { defaultSeo, getSeoObject } from "@/lib/defaultSeo";
-import { HomePage } from "@/types/strapi/homepage";
+
+import HomePage from "@/components/HomePage";
+import { StrapiSeo } from "@/types/strapi";
+
+interface HomePageType {
+  title: string;
+  content?: string;
+  metadata: StrapiSeo;
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const homepageData = await fetchFromStrapi<HomePage>("homepage?populate=*");
+    const homepageData = await fetchFromStrapi<HomePageType>(
+      "homepage?populate=*"
+    );
 
-    console.log("homepageData", homepageData);
-
-    return defaultSeo;
-
-    // return await getSeoObject(homepageData.metadata);
+    return await getSeoObject(homepageData.metadata);
   } catch (error) {
     console.error("Error fetching SEO metadata:", error);
 
@@ -20,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const homepageData = await fetchFromStrapi<HomePage>("homepage");
+  const homepageData = await fetchFromStrapi<HomePageType>("homepage");
 
-  return <div>setup</div>;
+  return <HomePage data={homepageData} />;
 }

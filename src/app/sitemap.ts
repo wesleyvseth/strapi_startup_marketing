@@ -2,13 +2,10 @@ import { MetadataRoute } from "next";
 import { fetchFromStrapi } from "@/lib/strapi";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Get your base URL from environment variable
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lyara.io"; // Replace with your actual domain
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
-  // Fetch dynamic routes from Strapi
-  // Add more fetch calls based on your content types
   const homepage: MetadataRoute.Sitemap[number] = {
-    url: baseUrl,
+    url: baseUrl || "",
     lastModified: new Date(),
     changeFrequency: "yearly",
     priority: 1,
@@ -17,16 +14,52 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Add your static routes
   const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: `${baseUrl}/contact`,
+      url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/blogs`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/cases`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/faq`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/prices`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/reviews`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/team`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
   ] satisfies MetadataRoute.Sitemap;
 
