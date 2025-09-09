@@ -1,6 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./global.css";
 import Header from "@/components/Header";
+import CookieBanner from "@/components/CookieBanner";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import ClientOnly from "@/components/ClientOnly";
 import { Viewport } from "next";
 
 const geistSans = Geist({
@@ -28,8 +31,26 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${
+              process.env.NEXT_PUBLIC_GTM_ID || ""
+            }`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+
+        <ClientOnly>
+          <GoogleAnalytics />
+        </ClientOnly>
         <Header />
         {children}
+        <ClientOnly>
+          <CookieBanner />
+        </ClientOnly>
       </body>
     </html>
   );
