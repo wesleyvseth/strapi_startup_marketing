@@ -7,7 +7,11 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const homepageData = await fetchFromStrapi<HomePage>("homepage?populate=*");
 
-    return await getSeoObject(homepageData.metadata);
+    console.log("homepageData", homepageData);
+
+    return defaultSeo;
+
+    // return await getSeoObject(homepageData.metadata);
   } catch (error) {
     console.error("Error fetching SEO metadata:", error);
 
@@ -16,5 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
+  const homepageData = await fetchFromStrapi<HomePage>("homepage");
+
   return <div>setup</div>;
 }

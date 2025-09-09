@@ -1,11 +1,12 @@
 import axios, { AxiosResponse } from "axios";
+import { unstable_cache } from "next/cache";
 
 // Validate environment variables
 const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 const STRAPI_TOKEN = process.env.NEXT_PUBLIC_STRAPI_TOKEN;
 
 const strapiApi = axios.create({
-  baseURL: STRAPI_API_URL || "http://localhost:1337", // Default fallback
+  baseURL: STRAPI_API_URL,
   headers: {
     "Content-Type": "application/json",
     ...(STRAPI_TOKEN && { Authorization: `Bearer ${STRAPI_TOKEN}` }),
@@ -13,19 +14,35 @@ const strapiApi = axios.create({
 });
 
 interface CustomResponse<T> {
-  data: {
-    attributes: T;
-  };
+  data: T;
 }
 
+/**
+ * Fetch data from Strapi API with automatic caching
+ * Cache is invalidated via webhook endpoint
+ */
 export const fetchFromStrapi = async <T>(endpoint: string): Promise<T> => {
-  try {
-    const response = await strapiApi.get<CustomResponse<T>>(`/api/${endpoint}`);
-    return response.data.data.attributes;
-  } catch (error) {
-    console.error("Error fetching from Strapi:", error);
-    throw error;
-  }
+  const cachedFetch = unstable_cache(
+    async (endpoint: string): Promise<T> => {
+      try {
+        const response = await strapiApi.get<CustomResponse<T>>(
+          `/api/${endpoint}`
+        );
+        console.log("response", response);
+        return response.data.data;
+      } catch (error) {
+        console.error("Error fetching from Strapi:", error);
+        throw error;
+      }
+    },
+    [endpoint],
+    {
+      tags: ["strapi", endpoint],
+      revalidate: false, // Only revalidate via webhook
+    }
+  );
+
+  return cachedFetch(endpoint);
 };
 
 export const fetchFromStrapiWithHeaders = async <T>(

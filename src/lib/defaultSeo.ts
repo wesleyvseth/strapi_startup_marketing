@@ -1,35 +1,33 @@
 import { StrapiSeo } from "@/types/strapi";
 import { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 
 export const defaultSeo: Metadata = {
-  title: "Lyara - CRM",
-  description:
-    "Professional CRM solutions to grow your business. Discover innovative strategies and expert guidance.",
-  keywords:
-    "CRM, customer relationship management, business growth, sales automation, lead management",
+  title: "INSERT_TITLE",
+  description: "INSERT_DESCRIPTION",
+  keywords: "INSERT_KEYWORDS",
   robots: "index, follow",
   openGraph: {
-    title: "Lyara - CRM",
-    description:
-      "Professional CRM solutions to grow your business. Discover innovative strategies and expert guidance.",
+    title: "INSERT_TITLE",
+    description: "INSERT_DESCRIPTION",
     type: "website",
     locale: "en_US",
-    siteName: "Lyara",
+    siteName: "INSERT_SITE_NAME",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Lyara - CRM",
-    description:
-      "Professional CRM solutions to grow your business. Discover innovative strategies and expert guidance.",
+    title: "INSERT_TITLE",
+    description: "INSERT_DESCRIPTION",
   },
   alternates: {
-    canonical: "https://lyara.com",
+    canonical: "https://INSERT_CANONICAL",
   },
   viewport: "width=device-width, initial-scale=1",
 };
 
 /**
  * Helper function to create SEO metadata objects with standard fallbacks
+ * Automatically cached and invalidated via Strapi webhook
  *
  * @param seo - Partial metadata object with your custom values
  * @returns Complete metadata object with fallbacks applied
@@ -57,43 +55,52 @@ export const defaultSeo: Metadata = {
 export const getSeoObject = async (
   seo: Partial<StrapiSeo>
 ): Promise<Metadata> => {
-  const defaultTitle = "Lyara - CRM";
-  const defaultDescription =
-    "Professional CRM solutions to grow your business. Discover innovative strategies and expert guidance.";
-  const defaultKeywords =
-    "CRM, customer relationship management, business growth, sales automation, lead management";
-  const defaultSiteName = "Lyara";
-  const defaultCanonical = "https://lyara.io";
+  const cachedGetSeoObject = unstable_cache(
+    async (seo: Partial<StrapiSeo>): Promise<Metadata> => {
+      const defaultTitle = defaultSeo.title as string;
+      const defaultDescription = defaultSeo.description as string;
+      const defaultKeywords = defaultSeo.keywords as string;
+      const defaultSiteName = defaultSeo.openGraph?.siteName as string;
+      const defaultCanonical = defaultSeo.alternates?.canonical as string;
 
-  return {
-    title: seo.title || defaultTitle,
-    description: seo.description || defaultDescription,
-    keywords: seo.keywords || defaultKeywords,
-    robots: seo.metaRobots || "index, follow",
-    openGraph: {
-      title: seo.title || defaultTitle,
-      description: seo.description || defaultDescription,
-      locale: "en_US",
-      siteName: defaultSiteName,
-      images: seo.metaImage?.attributes?.attributes?.url
-        ? [seo.metaImage.attributes.attributes.url]
-        : undefined,
-      url:
-        seo.canonicalURL ||
-        (typeof seo.canonicalURL === "string"
-          ? seo.canonicalURL
-          : defaultCanonical),
+      return {
+        title: seo?.title || defaultTitle,
+        description: seo?.description || defaultDescription,
+        keywords: seo?.keywords || defaultKeywords,
+        robots: seo?.metaRobots || "index, follow",
+        openGraph: {
+          title: seo?.title || defaultTitle,
+          description: seo?.description || defaultDescription,
+          locale: "en_US",
+          siteName: defaultSiteName,
+          images: seo?.metaImage?.attributes?.attributes?.url
+            ? [seo?.metaImage.attributes.attributes.url]
+            : undefined,
+          url:
+            seo?.canonicalURL ||
+            (typeof seo?.canonicalURL === "string"
+              ? seo?.canonicalURL
+              : defaultCanonical),
+        },
+        twitter: {
+          title: seo?.title || defaultTitle,
+          description: seo?.description || defaultDescription,
+          images: seo?.metaImage?.attributes?.attributes?.url
+            ? [seo?.metaImage.attributes.attributes.url]
+            : undefined,
+        },
+        alternates: {
+          canonical: seo?.canonicalURL || defaultCanonical,
+        },
+        viewport: seo?.metaViewport || "width=device-width, initial-scale=1",
+      };
     },
-    twitter: {
-      title: seo.title || defaultTitle,
-      description: seo.description || defaultDescription,
-      images: seo.metaImage?.attributes?.attributes?.url
-        ? [seo.metaImage.attributes.attributes.url]
-        : undefined,
-    },
-    alternates: {
-      canonical: seo.canonicalURL || defaultCanonical,
-    },
-    viewport: seo.metaViewport || "width=device-width, initial-scale=1",
-  };
+    ["seo-metadata"],
+    {
+      tags: ["seo", "strapi"],
+      revalidate: false, // Only revalidate via webhook
+    }
+  );
+
+  return cachedGetSeoObject(seo);
 };
