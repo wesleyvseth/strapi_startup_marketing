@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { fetchFromStrapi } from "@/lib/strapi";
+import { StrapiContentList, BlogPost } from "@/types/strapi";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -65,18 +66,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // For dynamic routes
   try {
-    // const blogsResponse = await fetchFromStrapi<any>("blogs?populate=*");
-    // const blogRoutes: MetadataRoute.Sitemap = blogsResponse.data.map(
-    //   (blog: Blog) => ({
-    //     url: `${baseUrl}/blogs/${blog.attributes.slug}`,
-    //     lastModified: new Date(blog.attributes.updatedAt),
-    //     changeFrequency: "monthly",
-    //     priority: 0.7,
-    //   })
-    // );
+    // Fetch blog posts for sitemap
+    const blogsResponse = await fetchFromStrapi<StrapiContentList<BlogPost>>(
+      "blog-posts?fields[0]=slug&fields[1]=publishedAt&fields[2]=updatedAt"
+    );
 
-    // return [homepage, ...staticRoutes, ...blogRoutes];
-    return [homepage, ...staticRoutes];
+    const blogRoutes: MetadataRoute.Sitemap = (blogsResponse.data || []).map(
+      (blog) => ({
+        url: `${baseUrl}/blogs/${blog.attributes.slug}`,
+        lastModified: new Date(blog.attributes.publishedAt || new Date()),
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      })
+    );
+
+    return [homepage, ...staticRoutes, ...blogRoutes];
   } catch (error) {
     console.error("Error fetching dynamic routes:", error);
     return [homepage, ...staticRoutes];

@@ -74,6 +74,17 @@ export interface StrapiLocalization {
   };
 }
 
+// Blog Post Types
+export interface BlogPost {
+  title: string;
+  slug: string;
+  content?: any;
+  excerpt?: string;
+  publishedAt?: string;
+  metadata: StrapiSeo;
+  featuredImage?: StrapiData<StrapiMedia>;
+}
+
 // Helper types for content
 export type StrapiContent<T> = StrapiData<T & StrapiLocalization>;
 export type StrapiContentList<T> = StrapiResponse<StrapiContent<T>[]>;
