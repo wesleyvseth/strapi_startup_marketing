@@ -4,6 +4,16 @@ const nextConfig: NextConfig = {
   // Enable compression for better performance
   compress: true,
 
+  // Disable caching in development
+  ...(process.env.NODE_ENV === "development" && {
+    onDemandEntries: {
+      // period (in ms) where the server will keep pages in the buffer
+      maxInactiveAge: 25 * 1000,
+      // number of pages that should be kept simultaneously without being disposed
+      pagesBufferLength: 2,
+    },
+  }),
+
   // Optimize images with caching
   images: {
     formats: ["image/avif", "image/webp"],
@@ -20,14 +30,18 @@ const nextConfig: NextConfig = {
 
   // Security and performance headers
   async headers() {
+    const isDev = process.env.NODE_ENV === "development";
+
     return [
-      // Cache static assets aggressively
+      // Cache static assets aggressively (disabled in development)
       {
         source: "/(.*\\.(?:ico|png|jpg|jpeg|gif|webp|svg|css|js))",
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable", // 1 year
+            value: isDev
+              ? "no-cache, no-store, must-revalidate" // No caching in development
+              : "public, max-age=31536000, immutable", // 1 year in production
           },
           {
             key: "X-Content-Type-Options",
@@ -35,13 +49,15 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // Cache fonts aggressively
+      // Cache fonts aggressively (disabled in development)
       {
         source: "/fonts/(.*)",
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
+            value: isDev
+              ? "no-cache, no-store, must-revalidate" // No caching in development
+              : "public, max-age=31536000, immutable", // 1 year in production
           },
           {
             key: "Access-Control-Allow-Origin",
@@ -49,23 +65,27 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // API routes with shorter cache
+      // API routes with shorter cache (disabled in development)
       {
         source: "/api/(.*)",
         headers: [
           {
             key: "Cache-Control",
-            value: "public, s-maxage=3600, stale-while-revalidate=86400", // 1 hour cache, 24 hour stale
+            value: isDev
+              ? "no-cache, no-store, must-revalidate" // No caching in development
+              : "public, s-maxage=3600, stale-while-revalidate=86400", // 1 hour cache, 24 hour stale in production
           },
         ],
       },
-      // HTML pages with smart caching
+      // HTML pages with smart caching (disabled in development)
       {
         source: "/((?!api|_next|static).*)",
         headers: [
           {
             key: "Cache-Control",
-            value: "public, s-maxage=600, stale-while-revalidate=86400", // 10 min cache, 24 hour stale
+            value: isDev
+              ? "no-cache, no-store, must-revalidate" // No caching in development
+              : "public, s-maxage=600, stale-while-revalidate=86400", // 10 min cache, 24 hour stale in production
           },
           {
             key: "X-Frame-Options",
