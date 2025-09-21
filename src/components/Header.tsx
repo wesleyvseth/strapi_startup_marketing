@@ -46,10 +46,7 @@ export default function Header() {
       <div className="bg-white/95 backdrop-blur-xl rounded-xl shadow-lg border border-gray-200/50 max-w-5xl w-full mx-auto">
         <div className="flex items-center justify-between h-14 px-6">
           {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center space-x-2"
-          >
+          <Link href="/" className="flex items-center space-x-2">
             <div className="text-xl font-bold text-gray-900 hover:text-primary transition-colors">
               Brand
             </div>
@@ -77,9 +74,7 @@ export default function Header() {
           {/* Desktop CTA Button */}
           <div className="hidden md:block">
             <Button asChild variant="default">
-              <Link href="/contact">
-                Get Started
-              </Link>
+              <Link href="/contact">Get Started</Link>
             </Button>
           </div>
 
@@ -126,9 +121,7 @@ export default function Header() {
                             active && "bg-primary/10 text-primary"
                           )}
                         >
-                          <span className="text-base">
-                            {link.label}
-                          </span>
+                          <span className="text-base">{link.label}</span>
                           <div
                             className={cn(
                               "ml-auto transition-opacity",
@@ -146,15 +139,13 @@ export default function Header() {
                   {/* Mobile CTA Button */}
                   <div className="mb-8 p-4">
                     <div className="text-center">
-                      <Button 
-                        variant="default" 
+                      <Button
+                        variant="default"
                         className="w-full"
                         onClick={handleNavigation}
                         asChild
                       >
-                        <Link href="/contact">
-                          Get Started
-                        </Link>
+                        <Link href="/contact">Get Started</Link>
                       </Button>
                     </div>
                   </div>
