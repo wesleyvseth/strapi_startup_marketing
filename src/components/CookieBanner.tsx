@@ -119,12 +119,7 @@ export default function CookieBanner() {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <Button
-                      onClick={handleAcceptAll}
-                      className="bg-gray-900 text-white hover:bg-gray-800 flex-1 sm:flex-none"
-                    >
-                      Accept All
-                    </Button>
+                    <Button onClick={handleAcceptAll}>Accept All</Button>
                     <Button
                       onClick={handleRejectAll}
                       variant="outline"

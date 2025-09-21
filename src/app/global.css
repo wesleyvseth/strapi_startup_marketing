@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------- */
+/* For creating a new theme use https://tweakcn.com/editor/theme */
+/* ------------------------------------------------------------- */
+
 /* Custom brand colors for Tailwind v4 */
 @theme inline {
   --color-background: var(--background);
