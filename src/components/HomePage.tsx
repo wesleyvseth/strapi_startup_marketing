@@ -1,5 +1,6 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import { Button } from "./ui/button";
+import { Avatar, AvatarImage } from "./ui/avatar";
 
 interface HomePageData {
   title: string;
@@ -12,6 +13,16 @@ interface HomePageProps {
 }
 
 export default function HomePage({ data }: HomePageProps) {
+  const reviews = {
+    avatars: [
+      { src: "https://github.com/shadcn.png", alt: "Avatar 1" },
+      { src: "https://github.com/shadcn.png", alt: "Avatar 2" },
+      { src: "https://github.com/shadcn.png", alt: "Avatar 3" },
+    ],
+    rating: 4.5,
+    count: 100,
+  };
+
   return (
     <section className="mx-auto w-full max-w-screen-2xl">
       <div className="container flex flex-col items-center">
@@ -31,13 +42,31 @@ export default function HomePage({ data }: HomePageProps) {
                   <ArrowRight className="mr-2 size-4" />
                   Primary (CSS var)
                 </Button>
-                <Button className="text-white" color="primary">
-                  Primary (utility)
-                </Button>
-
-                <Button variant="outline" className="w-full sm:w-auto">
-                  Outline
-                </Button>
+                <div className="mx-auto flex w-fit flex-col items-center gap-4 sm:flex-row">
+                  <span className="inline-flex items-center ">
+                    {reviews.avatars.map((avatar, index) => (
+                      <Avatar key={index} className="size-10 border">
+                        <AvatarImage src={avatar.src} alt={avatar.alt} />
+                      </Avatar>
+                    ))}
+                  </span>
+                  <div>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, index) => (
+                        <Star
+                          key={index}
+                          className="size-5 fill-yellow-400 text-yellow-400"
+                        />
+                      ))}
+                      <span className="mr-1 font-semibold">
+                        {reviews.rating?.toFixed(1)}
+                      </span>
+                    </div>
+                    <p className="text-muted-foreground text-left font-medium">
+                      from {reviews.count}+ reviews
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="flex flex-col items-center justify-center">

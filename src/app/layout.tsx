@@ -47,7 +47,7 @@ export default function RootLayout({
           <GoogleAnalytics />
         </ClientOnly>
         <Header />
-        {children}
+        <main className="pt-20">{children}</main>
         <ClientOnly>
           <CookieBanner />
         </ClientOnly>
