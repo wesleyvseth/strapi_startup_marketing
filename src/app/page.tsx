@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { defaultSeo, getSeoObject } from "@/lib/defaultSeo";
 
 import HomePage from "@/components/HomePage";
+import StructuredData from "@/components/StructuredData";
 import { StrapiSeo } from "@/types/strapi";
 
 interface HomePageType {
@@ -28,5 +29,13 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Home() {
   const homepageData = await fetchFromStrapi<HomePageType>("homepage");
 
-  return <HomePage data={homepageData} />;
+  return (
+    <>
+      <StructuredData
+        seo={homepageData.metadata}
+        url="https://INSERT_CANONICAL"
+      />
+      <HomePage data={homepageData} />
+    </>
+  );
 }
