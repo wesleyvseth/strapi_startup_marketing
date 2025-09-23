@@ -37,11 +37,8 @@ export default function HomePage({ data }: HomePageProps) {
                 doloremque mollitia fugiat omnis! Porro facilis quo animi
                 consequatur. Explicabo.
               </p>
-              <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
-                <Button className="w-full sm:w-auto">
-                  <ArrowRight className="mr-2 size-4" />
-                  Primary (CSS var)
-                </Button>
+              <div className="flex w-full flex-col justify-center gap-8 md:gap-2 sm:flex-row lg:justify-start items-center">
+                <Button className="w-full sm:w-auto">Primary</Button>
                 <div className="mx-auto flex w-fit flex-col items-center gap-4 sm:flex-row">
                   <span className="inline-flex items-center ">
                     {reviews.avatars.map((avatar, index) => (
