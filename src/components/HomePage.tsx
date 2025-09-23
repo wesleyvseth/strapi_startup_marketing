@@ -80,7 +80,6 @@ export default function HomePage({ data }: HomePageProps) {
           </div>
         </div>
       </div>
-      <div className="min-h-screen"> </div>
     </section>
   );
 }
