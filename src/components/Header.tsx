@@ -89,7 +89,7 @@ const Navbar2 = ({
 }: Navbar2Props) => {
   return (
     <section>
-      <div className="container fixed top-0 z-50 px-4 mx-auto py-4 bg-white">
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 py-4 bg-white">
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex">
           {/* Logo */}

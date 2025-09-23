@@ -46,7 +46,7 @@ export default function RootLayout({
         <ClientOnly>
           <GoogleAnalytics />
         </ClientOnly>
-        <div className="container relative mx-auto">
+        <div className="relative mx-auto max-w-7xl pt-20">
           <Header />
           <main>{children}</main>
         </div>
