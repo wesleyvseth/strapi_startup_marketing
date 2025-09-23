@@ -24,7 +24,7 @@ export default function HomePage({ data }: HomePageProps) {
   };
 
   return (
-    <section className="mx-auto w-full max-w-screen-2xl">
+    <section>
       <div className="container flex flex-col items-center">
         <div className="2xl:w-[calc(min(100vw-2*theme(container.padding),100%+8rem))] w-full overflow-clip rounded-lg">
           <div className="grid items-center gap-8 lg:grid-cols-2">
@@ -80,6 +80,7 @@ export default function HomePage({ data }: HomePageProps) {
           </div>
         </div>
       </div>
+      <div className="min-h-screen"> </div>
     </section>
   );
 }

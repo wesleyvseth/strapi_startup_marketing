@@ -46,8 +46,10 @@ export default function RootLayout({
         <ClientOnly>
           <GoogleAnalytics />
         </ClientOnly>
-        <Header />
-        <main className="pt-20">{children}</main>
+        <div className="container relative mx-auto">
+          <Header />
+          <main>{children}</main>
+        </div>
         <ClientOnly>
           <CookieBanner />
         </ClientOnly>
