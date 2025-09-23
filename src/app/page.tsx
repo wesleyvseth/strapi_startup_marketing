@@ -33,7 +33,7 @@ export default async function Home() {
     <>
       <StructuredData
         seo={homepageData.metadata}
-        url="https://INSERT_CANONICAL"
+        url={process.env.NEXT_PUBLIC_SITE_URL}
       />
       <HomePage data={homepageData} />
     </>

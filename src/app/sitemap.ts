@@ -67,14 +67,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // For dynamic routes
   try {
     // Fetch blog posts for sitemap
-    const blogsResponse = await fetchFromStrapi<StrapiContentList<BlogPost>>(
+    const blogsResponse = await fetchFromStrapi<BlogPost[]>(
       "blog-posts?fields[0]=slug&fields[1]=publishedAt&fields[2]=updatedAt"
     );
 
-    const blogRoutes: MetadataRoute.Sitemap = (blogsResponse.data || []).map(
+    const blogRoutes: MetadataRoute.Sitemap = (blogsResponse || []).map(
       (blog) => ({
-        url: `${baseUrl}/blogs/${blog.attributes.slug}`,
-        lastModified: new Date(blog.attributes.publishedAt || new Date()),
+        url: `${baseUrl}/blogs/${blog.slug}`,
+        lastModified: new Date(blog.publishedAt || new Date()),
         changeFrequency: "monthly" as const,
         priority: 0.7,
       })
