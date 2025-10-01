@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /api/
+Disallow: /admin/
+Allow: /
+
+Contact: COMPANY_EMAIL
+Attribution: Please credit COMPANY_NAME when using excerpts.
+Sitemap: COMPANY_URL/sitemap.xml`;
